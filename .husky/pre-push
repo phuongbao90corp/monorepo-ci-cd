@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running type check..."
+if ! bunx turbo run check-types --output-logs=errors-only; then
+  echo ""
+  echo "❌ Type check failed. Please fix type errors before pushing."
+  exit 1
+fi
+
+echo "🧪 Running tests..."
+if ! bunx turbo run test --output-logs=errors-only; then
+  echo ""
+  echo "❌ Tests failed. Please fix failing tests before pushing."
+  exit 1
+fi
+
+echo "✅ All checks passed. Proceeding with push."
