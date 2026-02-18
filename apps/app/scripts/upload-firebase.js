@@ -21,7 +21,7 @@ const firebaseAppIdMap = {
 const serviceAccountKeyPath = path.resolve(
   __dirname,
   "..",
-  "google-service-account-key.json",
+  "secrets/google-service-account-key.json",
 );
 
 // ─── Parse CLI arguments ─────────────────────────────────────────────────────
