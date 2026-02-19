@@ -3,13 +3,13 @@ const IS_DEV = ENV === "development";
 const IS_STAG = ENV === "staging";
 const IS_PROD = ENV === "production";
 
-console.warn("------------------------------------------------");
-console.warn("SUPER_API_KEY ", process.env.SUPER_API_KEY);
-console.warn("API_KEY ", process.env.API_KEY);
-console.warn("EXPO_PUBLIC_API_ENDPOINT ", process.env.EXPO_PUBLIC_API_ENDPOINT);
-console.warn("EXPO_PUBLIC_APP_VARIANT ", process.env.EXPO_PUBLIC_APP_VARIANT);
-console.warn("EXPO_PUBLIC_SAME_ENV ", process.env.EXPO_PUBLIC_SAME_ENV);
-console.warn("------------------------------------------------");
+// console.warn("------------------------------------------------");
+// console.warn("SUPER_API_KEY ", process.env.SUPER_API_KEY);
+// console.warn("API_KEY ", process.env.API_KEY);
+// console.warn("EXPO_PUBLIC_API_ENDPOINT ", process.env.EXPO_PUBLIC_API_ENDPOINT);
+// console.warn("EXPO_PUBLIC_APP_VARIANT ", process.env.EXPO_PUBLIC_APP_VARIANT);
+// console.warn("EXPO_PUBLIC_SAME_ENV ", process.env.EXPO_PUBLIC_SAME_ENV);
+// console.warn("------------------------------------------------");
 
 export default () => {
   return {
