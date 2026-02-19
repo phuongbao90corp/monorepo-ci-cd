@@ -4,8 +4,6 @@ const path = require("node:path");
 
 // ─── Profile mapping ────────────────────────────────────────────────────────
 const profileMap = {
-  "--dev": "development",
-  "--stag": "preview",
   "--prod": "production",
 };
 
@@ -16,9 +14,7 @@ const profileFlag = args.find((arg) => profileMap[arg]);
 if (!profileFlag) {
   console.error("❌ Error: Missing profile argument.");
   console.log("\nUsage: node scripts/upload-play-store.js <profile>");
-  console.log(
-    "Profiles: --dev, --stag, --prod (usually --prod for Play Store)",
-  );
+  console.log("Profiles: --prod (must be --prod for Play Store)");
   console.log("\nExample: node scripts/upload-play-store.js --prod");
   process.exit(1);
 }

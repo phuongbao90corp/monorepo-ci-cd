@@ -1,10 +1,20 @@
-const IS_DEV = process.env.APP_VARIANT === "development";
-const IS_STAG = process.env.APP_VARIANT === "staging";
+const ENV = process.env.EXPO_PUBLIC_APP_VARIANT;
+const IS_DEV = ENV === "development";
+const IS_STAG = ENV === "staging";
+const IS_PROD = ENV === "production";
+
+console.warn("------------------------------------------------");
+console.warn("SUPER_API_KEY ", process.env.SUPER_API_KEY);
+console.warn("API_KEY ", process.env.API_KEY);
+console.warn("EXPO_PUBLIC_API_ENDPOINT ", process.env.EXPO_PUBLIC_API_ENDPOINT);
+console.warn("EXPO_PUBLIC_APP_VARIANT ", process.env.EXPO_PUBLIC_APP_VARIANT);
+console.warn("EXPO_PUBLIC_SAME_ENV ", process.env.EXPO_PUBLIC_SAME_ENV);
+console.warn("------------------------------------------------");
 
 export default () => {
   return {
-    name: "app",
-    slug: "monorepo-ci-cd",
+    name: IS_PROD ? "app" : IS_STAG ? "app-stag" : "app-dev",
+    slug: IS_PROD ? "monorepo-ci-cd" : "monorepo-ci-cd-dev",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     scheme: "app",
@@ -59,9 +69,21 @@ export default () => {
     extra: {
       router: {},
       eas: {
-        projectId: "2b926d19-2f7e-47c7-8a8b-3113c4434caf",
+        projectId: IS_PROD
+          ? "2b926d19-2f7e-47c7-8a8b-3113c4434caf" // production project
+          : "2021007d-da18-4957-9319-0f1e3c34401f", // dev/staging project
       },
     },
-    owner: "phuongbao90",
+    updates: {
+      checkAutomatically: "NEVER",
+      fallbackToCacheTimeout: 0,
+      url: IS_PROD
+        ? "https://u.expo.dev/2b926d19-2f7e-47c7-8a8b-3113c4434caf"
+        : "https://u.expo.dev/2021007d-da18-4957-9319-0f1e3c34401f",
+    },
+    runtimeVersion: {
+      policy: "appVersion",
+    },
+    owner: "phuongbao90corp",
   };
 };

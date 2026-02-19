@@ -69,7 +69,10 @@ console.log(
 
 // 1. Pull environment variables from EAS
 // We use the profile name as the environment name, and explicitly target .env.local
-runCommand(`eas env:pull ${profile} --non-interactive`, appDir);
+runCommand(
+  `EXPO_PUBLIC_APP_VARIANT=${profile} eas env:pull ${profile} --non-interactive`,
+  appDir,
+);
 // 2. Prebuild (clean)
 // Use --overload to ensure .env.local variables take precedence over system env
 runCommand(
@@ -78,8 +81,11 @@ runCommand(
 );
 
 // 3. Build locally
+// For production + APK, use the "production-apk" profile (extends production but forces APK build type)
+const buildProfile =
+  profile === "production" && format === "apk" ? "production-apk" : profile;
 runCommand(
-  `npx @dotenvx/dotenvx run --overload -f .env.local -- eas build --local --platform android --profile ${profile} --clear-cache --output ${outputPath}`,
+  `npx @dotenvx/dotenvx run --overload -f .env.local -- eas build --local --platform android --profile ${buildProfile} --clear-cache --output ${outputPath}`,
   appDir,
 );
 

@@ -12,12 +12,11 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "build:android": "bun ./scripts/build-android.js",
-    "build:dev:remote": "eas build --platform android --profile development --non-interactive",
-    "build:preview:remote": "eas build --platform android --profile preview --non-interactive",
-    "build:prod:remote": "eas build --platform android --profile production --non-interactive",
+    "build:dev:remote": "EXPO_PUBLIC_APP_VARIANT=development eas build --platform android --profile development --non-interactive",
+    "build:preview:remote": "EXPO_PUBLIC_APP_VARIANT=preview eas build --platform android --profile preview --non-interactive",
+    "build:prod:remote": "EXPO_PUBLIC_APP_VARIANT=production eas build --platform android --profile production --non-interactive",
     "upload:firebase": "bun ./scripts/upload-firebase.js",
     "upload:play": "bun ./scripts/upload-play-store.js",
-    "ship:qa": "bun build:android --stag --apk && bun upload:firebase --stag --apk",
     "ship:prod": "bun build:android --prod --aab && bun upload:play --prod"
   },
   "dependencies": {
@@ -38,6 +37,7 @@
     "expo-status-bar": "~55.0.3",
     "expo-symbols": "~55.0.4",
     "expo-system-ui": "~55.0.6",
+    "expo-updates": "~55.0.8",
     "expo-web-browser": "~55.0.6",
     "react": "19.2.0",
     "react-dom": "19.2.0",

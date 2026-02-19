@@ -1,0 +1,39 @@
+name: OTA Update — Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "Update message (what changed?)"
+        required: true
+        type: string
+
+jobs:
+  ota-production:
+    name: Publish OTA to Production
+    runs-on: ubuntu-latest
+    environment: production # ← Lead must approve before this runs
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Publish OTA update to production channel
+        working-directory: apps/app
+        env:
+          EXPO_PUBLIC_APP_VARIANT: production
+        run: eas update --channel production --message "${{ inputs.message }}" --non-interactive
