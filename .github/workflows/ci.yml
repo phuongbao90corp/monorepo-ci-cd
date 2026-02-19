@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
   pull_request:
-    branches: [main, master]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -57,11 +55,40 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Resolve Turbo SCM range
+        id: turbo-range
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_REF="origin/${{ github.base_ref }}"
+            git fetch --no-tags --prune --depth=1 origin "${{ github.base_ref }}"
+            BASE="$BASE_REF"
+          else
+            BASE="${{ github.event.before }}"
+            if [[ -z "$BASE" || "$BASE" == "0000000000000000000000000000000000000000" ]]; then
+              BASE="$(git rev-parse HEAD^ 2>/dev/null || git rev-parse HEAD)"
+            fi
+          fi
+
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          echo "head=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+
       - name: Lint (affected)
+        env:
+          TURBO_SCM_BASE: ${{ steps.turbo-range.outputs.base }}
+          TURBO_SCM_HEAD: ${{ steps.turbo-range.outputs.head }}
         run: bunx turbo run lint --affected
 
       - name: Typecheck (affected)
+        env:
+          TURBO_SCM_BASE: ${{ steps.turbo-range.outputs.base }}
+          TURBO_SCM_HEAD: ${{ steps.turbo-range.outputs.head }}
         run: bunx turbo run check-types --affected
 
       - name: Test (affected)
+        env:
+          TURBO_SCM_BASE: ${{ steps.turbo-range.outputs.base }}
+          TURBO_SCM_HEAD: ${{ steps.turbo-range.outputs.head }}
         run: bunx turbo run test --affected
