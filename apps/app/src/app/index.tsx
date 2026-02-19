@@ -10,7 +10,6 @@ import { WebBadge } from "@/components/web-badge";
 import { BottomTabInset, MaxContentWidth, Spacing } from "@/constants/theme";
 
 function getDevMenuHint() {
-  const test: number = "1";
   if (Platform.OS === "web") {
     return <ThemedText type="small">use browser devtools</ThemedText>;
   }
